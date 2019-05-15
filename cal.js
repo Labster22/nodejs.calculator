@@ -10,17 +10,17 @@ http.createServer(function (req, res) {
 
     var postData = "";
 
-    req.on('data', function (chunk) {
+    req.on('data', function (chunk) {    //接收数据（表单里面的）
 
         postData += chunk;
-
+		
     });
 
     req.on('end', function () {
 
         var c="1+1+1";
 
-        var get=url.parse(req.url,true).query;
+        var get=url.parse(req.url,true).query;  //解析url并返回对象及属性
 
         var post=querystring.parse(postData);
 
@@ -28,15 +28,11 @@ http.createServer(function (req, res) {
 
             c=post.c;
 
-            //res.write(c+"="+eval(c));//第一种方法
-
-            res.write(c+"=<script>document.write(eval('"+c+"'))</script>");//第二方法
+            res.write(c+"="+eval(c));
 
         }
-
-         
-
-        res.write('<form method="post" action="?act=cal" >');
+  
+        res.write('<form method="post" action="?act=cal" >');   //使用表单
 
         res.write('式子：<input name="c" type="text" value="'+c+'" />');
 
@@ -46,8 +42,4 @@ http.createServer(function (req, res) {
 
     });
 
-}).listen(3000, function () {
-
-    console.log("listen on port 3000");
-
-});
+}).listen(3000);
